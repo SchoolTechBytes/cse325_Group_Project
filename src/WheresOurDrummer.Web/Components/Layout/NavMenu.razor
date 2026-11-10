@@ -1,0 +1,70 @@
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+@* Progressive enhancement: without interactivity (e.g. the static Identity pages) the links
+   simply stay visible. Once the circuit is up, the collapse button appears on small screens. *@
+<nav class="site-nav @(collapsible ? "is-collapsible" : "")" aria-label="Main">
+    <a class="site-nav__brand" href="">@AppInfo.Name</a>
+
+    <button type="button" class="site-nav__toggle" aria-expanded="@open.ToString().ToLowerInvariant()"
+            aria-controls="site-nav-links" @onclick="ToggleMenu">
+        Menu
+    </button>
+
+    <ul id="site-nav-links" class="site-nav__links @(open ? "is-open" : "")">
+        <li><NavLink class="site-nav__link" href="" Match="NavLinkMatch.All">Home</NavLink></li>
+        <li><NavLink class="site-nav__link" href="musicians">Musicians</NavLink></li>
+        <li><NavLink class="site-nav__link" href="bands">Bands</NavLink></li>
+        <li><NavLink class="site-nav__link" href="listings">Listings</NavLink></li>
+        <AuthorizeView>
+            <Authorized>
+                <li><NavLink class="site-nav__link" href="inbox">Inbox</NavLink></li>
+                <li><NavLink class="site-nav__link" href="Account/Manage">@context.User.Identity?.Name</NavLink></li>
+                <li>
+                    <form action="Account/Logout" method="post">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                        <button type="submit" class="site-nav__link site-nav__button">Logout</button>
+                    </form>
+                </li>
+            </Authorized>
+            <NotAuthorized>
+                <li><NavLink class="site-nav__link" href="Account/Register">Register</NavLink></li>
+                <li><NavLink class="site-nav__link" href="Account/Login">Login</NavLink></li>
+            </NotAuthorized>
+        </AuthorizeView>
+    </ul>
+</nav>
+
+@code {
+    private string? currentUrl;
+    private bool collapsible;
+    private bool open;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // Only runs once interactive, so the toggle never appears where it cannot work.
+        if (firstRender)
+        {
+            collapsible = true;
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleMenu() => open = !open;
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        open = false; // close the mobile menu after navigating
+        StateHasChanged();
+    }
+
+    public void Dispose() => NavigationManager.LocationChanged -= OnLocationChanged;
+}
