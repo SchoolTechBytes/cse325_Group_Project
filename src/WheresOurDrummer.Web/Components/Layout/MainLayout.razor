@@ -1,0 +1,23 @@
+@inherits LayoutComponentBase
+
+@* Skip link is the first focusable element so keyboard users can bypass the nav. *@
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site">
+    <header class="site-header">
+        <NavMenu />
+    </header>
+
+    @* tabindex=-1 lets the skip link move focus here. *@
+    <main id="main-content" class="site-main" tabindex="-1">
+        @Body
+    </main>
+
+    <Footer />
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href=".">Reload</a>
+    <button type="button" class="dismiss" aria-label="Dismiss error message">&#x1F5D9;</button>
+</div>

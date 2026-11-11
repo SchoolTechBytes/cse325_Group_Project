@@ -1,0 +1,229 @@
+/*
+ * PLACEHOLDER THEME: colors, fonts and spacing are temporary until the group picks a palette.
+ * Change the variables in :root; everything below should reference them.
+ * Keep text/background pairs at WCAG 2.2 AA contrast (4.5:1 normal text, 3:1 large text/UI).
+ *
+ * Contrast of the placeholder pairs (approx.):
+ *   text on background        #1f2933 / #ffffff  ~14:1
+ *   muted text on background  #52606d / #ffffff  ~6.5:1
+ *   link / primary on white   #0a58ca / #ffffff  ~6.4:1
+ *   header text on header bg  #ffffff / #12263a  ~15:1
+ *   focus ring on white       #0a58ca / #ffffff  ~6.4:1
+ *   focus ring on header      #ffd166 / #12263a  ~10:1
+ */
+:root {
+    /* Colors */
+    --color-bg: #ffffff;
+    --color-surface: #eef2f6;
+    --color-text: #1f2933;
+    --color-text-muted: #52606d;
+    --color-primary: #0a58ca;
+    --color-primary-contrast: #ffffff;
+    --color-header-bg: #12263a;
+    --color-header-text: #ffffff;
+    --color-border: #cbd2d9;
+    --color-focus: #0a58ca;
+    --color-focus-on-dark: #ffd166;
+
+    /* Fonts */
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-heading: var(--font-body);
+
+    /* Spacing scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2.5rem;
+
+    --radius: 0.375rem;
+    --content-max-width: 72rem;
+}
+
+html, body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+}
+
+a {
+    color: var(--color-primary);
+}
+
+/* Visible keyboard focus everywhere (WCAG 2.4.7 / 2.4.11). */
+:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+/* The scripted-focus h1 (FocusOnNavigate) and <main> should not show a ring. */
+h1:focus, main:focus {
+    outline: none;
+}
+
+/* Skip link: off-screen until focused. */
+.skip-link {
+    position: absolute;
+    left: var(--space-2);
+    top: -4rem;
+    z-index: 1000;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 2px solid var(--color-focus);
+    border-radius: var(--radius);
+}
+
+.skip-link:focus {
+    top: var(--space-2);
+}
+
+/* Page frame: header / main / footer stacked, footer pinned to the bottom. */
+.site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-3);
+}
+
+.site-footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-3);
+    text-align: center;
+    color: var(--color-text);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* Header and nav (mobile first: brand + toggle on one row, links stacked below). */
+.site-header {
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+}
+
+.site-header :focus-visible {
+    outline-color: var(--color-focus-on-dark);
+}
+
+.site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--space-2) var(--space-3);
+}
+
+.site-nav__brand {
+    color: var(--color-header-text);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+    padding: var(--space-2) 0;
+}
+
+.site-nav__toggle {
+    display: none; /* only shown when interactive, see .is-collapsible */
+    background: transparent;
+    color: var(--color-header-text);
+    border: 2px solid var(--color-header-text);
+    border-radius: var(--radius);
+    padding: var(--space-1) var(--space-3);
+    min-height: 2.75rem; /* comfortable touch target (WCAG 2.5.8) */
+    font: inherit;
+}
+
+.site-nav__links {
+    flex-basis: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-nav__link {
+    display: block;
+    padding: var(--space-2) var(--space-1);
+    min-height: 2.75rem;
+    color: var(--color-header-text);
+    text-decoration: none;
+}
+
+.site-nav__link:hover,
+.site-nav__link.active {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+}
+
+/* Logout is a <button> inside a form but should look like the other links. */
+.site-nav__button {
+    background: none;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+/* Phone width: collapse the links behind the toggle once the page is interactive. */
+@media (max-width: 47.99rem) {
+    .site-nav.is-collapsible .site-nav__toggle {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .site-nav.is-collapsible .site-nav__links:not(.is-open) {
+        display: none;
+    }
+}
+
+/* Tablet and up: links in a single row next to the brand. */
+@media (min-width: 48rem) {
+    .site-nav__links {
+        flex-basis: auto;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-3);
+    }
+
+    .site-nav__button {
+        width: auto;
+    }
+}
+
+/* Buttons for call-to-action links. */
+.button {
+    display: inline-block;
+    margin: 0 var(--space-2) var(--space-2) 0;
+    padding: var(--space-2) var(--space-4);
+    min-height: 2.75rem;
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.button--secondary {
+    background: var(--color-bg);
+    color: var(--color-primary);
+}
