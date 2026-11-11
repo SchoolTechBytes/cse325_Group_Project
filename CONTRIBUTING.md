@@ -22,6 +22,10 @@ dotnet user-secrets set "Key" "value" --project src/WheresOurDrummer.Web
 - Only one person has an open migration at a time. Merge it to `main` before the next person starts one.
 - Teammates pull `main` and run `dotnet ef database update` after a migration lands.
 
+## Database
+
+PostgreSQL (Npgsql) is the only database provider for the app. Do not swap or add providers without agreement from the whole group. SQLite is used only inside the test project. See the README for local setup.
+
 ## Naming
 
 - Code name for projects, namespaces, and folders: `WheresOurDrummer`.

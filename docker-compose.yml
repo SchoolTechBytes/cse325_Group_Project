@@ -1,0 +1,15 @@
+# Local development database only. These credentials are dev-only; never reuse them elsewhere.
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: wod_dev
+      POSTGRES_PASSWORD: wod_dev_password
+      POSTGRES_DB: wheresourdrummer
+    ports:
+      - "5432:5432"
+    volumes:
+      - wod_pgdata:/var/lib/postgresql/data
+
+volumes:
+  wod_pgdata:

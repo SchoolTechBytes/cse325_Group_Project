@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace WheresOurDrummer.Web.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options), IDataProtectionKeyContext
 {
     public DbSet<MusicianProfile> MusicianProfiles => Set<MusicianProfile>();
     public DbSet<BandProfile> BandProfiles => Set<BandProfile>();
@@ -12,6 +13,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Listing> Listings => Set<Listing>();
     public DbSet<SampleLink> SampleLinks => Set<SampleLink>();
     public DbSet<Inquiry> Inquiries => Set<Inquiry>();
+
+    // Auth cookie keys live in the DB because Render's filesystem is ephemeral.
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
