@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: wheresourdrummer
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    autoDeploy: true
+    branch: main
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: RUN_MIGRATIONS
+        value: "true"
+      # DATABASE_URL can come from a Render Postgres instance (its "Internal Database URL")
+      # or from any external Postgres (Neon, Supabase, ...). Paste it in the Render
+      # dashboard; sync: false keeps the value out of git.
+      - key: DATABASE_URL
+        sync: false

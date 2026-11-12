@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+.git/
+.github/
+.vs/
+.vscode/
+.idea/
+tests/
+*.md
+*.db
+*.db-shm
+*.db-wal
+secrets.json
+.env
+docker-compose.yml
+Dockerfile
+.dockerignore
