@@ -10,5 +10,6 @@ public class InstrumentConfiguration : IEntityTypeConfiguration<Instrument>
     {
         b.Property(x => x.Name).IsRequired().HasMaxLength(100);
         b.HasIndex(x => x.Name).IsUnique();
+        b.HasData(Seed.LookupSeedData.Instruments);
     }
 }
