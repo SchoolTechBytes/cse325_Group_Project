@@ -359,6 +359,138 @@ namespace WheresOurDrummer.Web.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Rock"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Alternative"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Indie"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Punk"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Metal"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Hard Rock"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Pop"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Country"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Folk"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Bluegrass"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Blues"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Jazz"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Funk"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Soul"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "R&B"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Hip-Hop"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Reggae"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Latin"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Gospel"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Worship"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Classical"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Electronic"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Ska"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Cover Band"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Singer-Songwriter"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("WheresOurDrummer.Web.Data.Entities.Inquiry", b =>
@@ -426,6 +558,158 @@ namespace WheresOurDrummer.Web.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Instruments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Acoustic Guitar"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Electric Guitar"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Bass Guitar"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Upright Bass"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Drums"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Percussion"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Vocals"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Backing Vocals"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Piano"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Keyboards"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Synthesizer"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Organ"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Violin"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Viola"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Cello"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Banjo"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Mandolin"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Ukulele"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Harmonica"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Saxophone"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Trumpet"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Trombone"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "French Horn"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Tuba"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Clarinet"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Flute"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Pedal Steel"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "DJ / Turntables"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "Producer / Programming"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("WheresOurDrummer.Web.Data.Entities.Listing", b =>
