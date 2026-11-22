@@ -117,3 +117,4 @@ The Dockerfile builds `src/WheresOurDrummer.Web` and runs it as a non-root user.
 ## Collaborators
 
 - Nicholas Nixon
+- Teniece Busenbark
