@@ -4,8 +4,9 @@
 @* Progressive enhancement: without interactivity (e.g. the static Identity pages) the links
    simply stay visible. Once the circuit is up, the collapse button appears on small screens. *@
 <nav class="site-nav @(collapsible ? "is-collapsible" : "")" aria-label="Main">
-    <a class="site-nav__brand" href="">@AppInfo.Name</a>
-
+    <a class="site-nav__brand" href="">
+        <img src="logo.png" alt="Where's Our Drummer?" />
+    </a>
     <button type="button" class="site-nav__toggle" aria-expanded="@open.ToString().ToLowerInvariant()"
             aria-controls="site-nav-links" @onclick="ToggleMenu">
         Menu
