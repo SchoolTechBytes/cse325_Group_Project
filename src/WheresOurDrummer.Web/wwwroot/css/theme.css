@@ -1,33 +1,35 @@
 /*
- * PLACEHOLDER THEME: colors, fonts and spacing are temporary until the group picks a palette.
- * Change the variables in :root; everything below should reference them.
- * Keep text/background pairs at WCAG 2.2 AA contrast (4.5:1 normal text, 3:1 large text/UI).
+- WHERE'S OUR DRUMMER? BRAND THEME
+- 5-Color Dark Mode Palette + Space Grotesk / Roboto Typography
+- All text/background pairs meet or exceed WCAG 2.2 AA contrast (4.5:1 normal text, 3:1 large text/UI).
  *
- * Contrast of the placeholder pairs (approx.):
- *   text on background        #1f2933 / #ffffff  ~14:1
- *   muted text on background  #52606d / #ffffff  ~6.5:1
- *   link / primary on white   #0a58ca / #ffffff  ~6.4:1
- *   header text on header bg  #ffffff / #12263a  ~15:1
- *   focus ring on white       #0a58ca / #ffffff  ~6.4:1
- *   focus ring on header      #ffd166 / #12263a  ~10:1
+- Contrast ratios of the brand pairs (approx.):
+-   text on background        #E6EAEE / #121619  ~14.9:1
+-   muted text on background  #B0BAC4 / #121619  ~9.3:1
+-   primary cyan on dark bg   #38D3F2 / #121619  ~10.1:1
+-   button text on cyan btn   #121619 / #38D3F2  ~10.1:1
+-   header text on header bg  #E6EAEE / #1E2429  ~12.8:1
+-   focus ring on dark bg     #38D3F2 / #121619  ~10.1:1
  */
 :root {
-    /* Colors */
-    --color-bg: #ffffff;
-    --color-surface: #eef2f6;
-    --color-text: #1f2933;
-    --color-text-muted: #52606d;
-    --color-primary: #0a58ca;
-    --color-primary-contrast: #ffffff;
-    --color-header-bg: #12263a;
-    --color-header-text: #ffffff;
-    --color-border: #cbd2d9;
-    --color-focus: #0a58ca;
-    --color-focus-on-dark: #ffd166;
+    /* 5-Color Brand Palette */
+    --color-bg: #121619;                 /* Deep Stage Charcoal */
+    --color-surface: #1E2429;            /* Elevated Slate */
+    --color-border: #2C353D;             /* Subtle Border / Divider */
+    --color-primary: #38D3F2;            /* Electric Cyan */
+    --color-text: #E6EAEE;               /* Crisp Silver White */
 
-    /* Fonts */
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-heading: var(--font-body);
+    /* Derived Semantic Tokens */
+    --color-text-muted: rgba(230, 234, 238, 0.72);
+    --color-primary-contrast: #121619;   /* Dark charcoal text on bright cyan buttons */
+    --color-header-bg: #1E2429;
+    --color-header-text: #E6EAEE;
+    --color-focus: #38D3F2;
+    --color-focus-on-dark: #38D3F2;
+
+    /* Fonts (Space Grotesk for headings, Roboto for body/UI) */
+    --font-heading: 'Space Grotesk', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-body: 'Roboto', system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 
     /* Spacing scale */
     --space-1: 0.25rem;
@@ -49,11 +51,16 @@ html, body {
 
 h1, h2, h3 {
     font-family: var(--font-heading);
+    letter-spacing: -0.02em;
     line-height: 1.2;
 }
 
 a {
     color: var(--color-primary);
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
 }
 
 /* Visible keyboard focus everywhere (WCAG 2.4.7 / 2.4.11). */
@@ -74,7 +81,7 @@ h1:focus, main:focus {
     top: -4rem;
     z-index: 1000;
     padding: var(--space-2) var(--space-3);
-    background: var(--color-bg);
+    background: var(--color-surface);
     color: var(--color-text);
     border: 2px solid var(--color-focus);
     border-radius: var(--radius);
@@ -104,7 +111,7 @@ h1:focus, main:focus {
     border-top: 1px solid var(--color-border);
     padding: var(--space-3);
     text-align: center;
-    color: var(--color-text);
+    color: var(--color-text-muted);
 }
 
 .site-footer p {
@@ -115,6 +122,7 @@ h1:focus, main:focus {
 .site-header {
     background: var(--color-header-bg);
     color: var(--color-header-text);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .site-header :focus-visible {
@@ -132,22 +140,38 @@ h1:focus, main:focus {
 }
 
 .site-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-heading);
     color: var(--color-header-text);
     font-weight: 700;
     font-size: 1.25rem;
     text-decoration: none;
-    padding: var(--space-2) 0;
+    padding: var(--space-1) 0;
+}
+
+.site-nav__brand img {
+    height: 2.5rem;
+    width: auto;
+    display: block;
 }
 
 .site-nav__toggle {
     display: none; /* only shown when interactive, see .is-collapsible */
     background: transparent;
     color: var(--color-header-text);
-    border: 2px solid var(--color-header-text);
+    border: 2px solid var(--color-border);
     border-radius: var(--radius);
     padding: var(--space-1) var(--space-3);
     min-height: 2.75rem; /* comfortable touch target (WCAG 2.5.8) */
     font: inherit;
+    cursor: pointer;
+}
+
+.site-nav__toggle:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .site-nav__links {
@@ -169,6 +193,7 @@ h1:focus, main:focus {
 
 .site-nav__link:hover,
 .site-nav__link.active {
+    color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 0.25em;
 }
@@ -211,7 +236,9 @@ h1:focus, main:focus {
 
 /* Buttons for call-to-action links. */
 .button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 var(--space-2) var(--space-2) 0;
     padding: var(--space-2) var(--space-4);
     min-height: 2.75rem;
@@ -220,10 +247,22 @@ h1:focus, main:focus {
     border: 2px solid var(--color-primary);
     border-radius: var(--radius);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s ease, background-color 0.15s ease;
+}
+
+.button:hover {
+    filter: brightness(1.08);
 }
 
 .button--secondary {
-    background: var(--color-bg);
+    background: var(--color-surface);
     color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.button--secondary:hover {
+    background: var(--color-border);
+    filter: none;
 }
