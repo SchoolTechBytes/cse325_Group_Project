@@ -7,7 +7,7 @@ using WheresOurDrummer.Web.Components;
 using WheresOurDrummer.Web.Components.Account;
 using WheresOurDrummer.Web.Data;
 using WheresOurDrummer.Web.Data.Seed;
-
+]
 var builder = WebApplication.CreateBuilder(args);
 
 // Hosting platforms (Render) tell us the port via PORT. Otherwise keep any URLs already
@@ -78,19 +78,43 @@ var app = builder.Build();
 
 // Apply migrations and seed roles only when explicitly requested (RUN_MIGRATIONS=true),
 // including in Development. Locally use `dotnet ef database update` otherwise.
-if (string.Equals(Environment.GetEnvironmentVariable("RUN_MIGRATIONS"), "true", StringComparison.OrdinalIgnoreCase))
+var runMigrations = string.Equals(
+    Environment.GetEnvironmentVariable("RUN_MIGRATIONS"),
+    "true",
+    StringComparison.OrdinalIgnoreCase);
+
+var seedDemoAccounts =
+    app.Environment.IsDevelopment() ||
+    app.Environment.IsEnvironment("Demo");
+
+if (runMigrations)
 {
     using var scope = app.Services.CreateScope();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation("RUN_MIGRATIONS=true: applying database migrations.");
-    await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-    logger.LogInformation("Migrations applied. Seeding roles.");
-    await RoleSeeder.SeedAsync(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
-    logger.LogInformation("Role seeding complete.");
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync();
 }
 else
 {
-    app.Logger.LogInformation("RUN_MIGRATIONS is not 'true': skipping migrations and role seeding.");
+    app.Logger.LogInformation(
+        "RUN_MIGRATIONS is not 'true': skipping migrations.");
+}
+
+if (seedDemoAccounts || runMigrations)
+{
+    using var scope = app.Services.CreateScope();
+
+    var roleManager = scope.ServiceProvider
+        .GetRequiredService<RoleManager<IdentityRole>>();
+
+    await RoleSeeder.SeedAsync(roleManager);
+
+    if (seedDemoAccounts)
+    {
+        var userManager = scope.ServiceProvider
+            .GetRequiredService<UserManager<ApplicationUser>>();
+
+        await DemoAccountSeeder.SeedAsync(userManager, app.Configuration);
+    }
 }
 
 // Must run first so scheme/IP are corrected before anything else looks at them.
