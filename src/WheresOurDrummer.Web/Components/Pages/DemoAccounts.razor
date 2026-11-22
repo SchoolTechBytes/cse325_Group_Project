@@ -1,0 +1,89 @@
+@page "/demo-accounts"
+@using Microsoft.AspNetCore.Identity
+@using WheresOurDrummer.Web.Data.Entities
+@inject UserManager<ApplicationUser> UserManager
+@inject IWebHostEnvironment HostEnvironment
+
+<PageTitle>Seeded demo accounts</PageTitle>
+
+<h1>Seeded demo accounts</h1>
+
+@if (!HostEnvironment.IsDevelopment())
+{
+    <p>This page is available only in Development.</p>
+}
+else if (accounts is null)
+{
+    <p>Loading accounts…</p>
+}
+else if (accounts.Count == 0)
+{
+    <p>No demo accounts found. Check that the app started in Development and the database is available.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Email confirmed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in accounts)
+            {
+                <tr>
+                    <td>@account.DisplayName</td>
+                    <td>@account.Email</td>
+                    <td>@account.Role</td>
+                    <td>@account.EmailConfirmed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<DemoAccountRow>? accounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!HostEnvironment.IsDevelopment())
+        {
+            return;
+        }
+
+        var musicians = await UserManager.GetUsersInRoleAsync("Musician");
+        var bands = await UserManager.GetUsersInRoleAsync("Band");
+
+        accounts = musicians
+            .Where(IsDemoAccount)
+            .Select(user => new DemoAccountRow(
+                user.DisplayName ?? "",
+                user.Email ?? "",
+                "Musician",
+                user.EmailConfirmed))
+            .Concat(bands
+                .Where(IsDemoAccount)
+                .Select(user => new DemoAccountRow(
+                    user.DisplayName ?? "",
+                    user.Email ?? "",
+                    "Band",
+                    user.EmailConfirmed)))
+            .OrderBy(account => account.Role)
+            .ThenBy(account => account.Email)
+            .ToList();
+    }
+
+    private static bool IsDemoAccount(ApplicationUser user) =>
+        user.Email?.StartsWith("demo.", StringComparison.OrdinalIgnoreCase) == true &&
+        user.Email.EndsWith("@example.test", StringComparison.OrdinalIgnoreCase);
+
+    private sealed record DemoAccountRow(
+        string DisplayName,
+        string Email,
+        string Role,
+        bool EmailConfirmed);
+}

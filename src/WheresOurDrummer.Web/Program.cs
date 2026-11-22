@@ -7,7 +7,7 @@ using WheresOurDrummer.Web.Components;
 using WheresOurDrummer.Web.Components.Account;
 using WheresOurDrummer.Web.Data;
 using WheresOurDrummer.Web.Data.Seed;
-]
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Hosting platforms (Render) tell us the port via PORT. Otherwise keep any URLs already
@@ -76,8 +76,8 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 var app = builder.Build();
 
-// Apply migrations and seed roles only when explicitly requested (RUN_MIGRATIONS=true),
-// including in Development. Locally use `dotnet ef database update` otherwise.
+// Apply migrations only when explicitly requested with RUN_MIGRATIONS=true.
+// Seed roles and demo accounts in Development and Demo after the schema exists.
 var runMigrations = string.Equals(
     Environment.GetEnvironmentVariable("RUN_MIGRATIONS"),
     "true",

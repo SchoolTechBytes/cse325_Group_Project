@@ -14,19 +14,40 @@ public static class DemoAccountSeeder
         var bandPassword = GetPassword(configuration, "BandPassword");
 
         await EnsureAccountAsync(
-            userManager,
-            "demo.musician@example.test",
-            "Demo Musician",
-            musicianPassword,
-            "Musician");
+        userManager,
+        "demo.musician.alex@example.test",
+        "Alex Rivera",
+        musicianPassword,
+        "Musician");
 
-        await EnsureAccountAsync(
-            userManager,
-            "demo.band@example.test",
-            "Demo Band",
-            bandPassword,
-            "Band");
-    }
+    await EnsureAccountAsync(
+        userManager,
+        "demo.musician.jordan@example.test",
+        "Jordan Lee",
+        musicianPassword,
+        "Musician");
+
+    await EnsureAccountAsync(
+        userManager,
+        "demo.musician.maya@example.test",
+        "Maya Brooks",
+        musicianPassword,
+        "Musician");
+
+    await EnsureAccountAsync(
+        userManager,
+        "demo.band.midnight@example.test",
+        "Midnight Echo",
+        bandPassword,
+        "Band");
+
+    await EnsureAccountAsync(
+        userManager,
+        "demo.band.juniper@example.test",
+        "Juniper Avenue",
+        bandPassword,
+        "Band");
+        }
 
     private static string GetPassword(IConfiguration configuration, string name) =>
         configuration[$"DemoAccounts:{name}"]
