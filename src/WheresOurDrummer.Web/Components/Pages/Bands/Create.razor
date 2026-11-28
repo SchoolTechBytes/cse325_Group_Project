@@ -1,0 +1,11 @@
+@page "/bands/create"
+@using Microsoft.AspNetCore.Authorization
+@using WheresOurDrummer.Web.Data
+@attribute [Authorize(Roles = AppRoles.Band)]
+
+@* Route is fixed by ProfileRoutes.CreateBand (new band accounts land here after login). *@
+
+<PageTitle>Create your band profile | @AppInfo.Name</PageTitle>
+
+<h1>Create your band profile</h1>
+<p>Coming soon: owned by Slice C.</p>

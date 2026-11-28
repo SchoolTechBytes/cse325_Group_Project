@@ -37,6 +37,10 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
         RedirectTo(newUri);
     }
 
+    /// <summary>Send a just-signed-in user through the landing check (profile setup first, then ReturnUrl).</summary>
+    public void RedirectToPostLogin(string? returnUrl)
+        => RedirectTo("Account/LoginRedirect", new() { ["returnUrl"] = returnUrl });
+
     public void RedirectToWithStatus(string uri, string message, HttpContext context)
     {
         context.Response.Cookies.Append(StatusCookieName, message, StatusCookieBuilder.Build(context));

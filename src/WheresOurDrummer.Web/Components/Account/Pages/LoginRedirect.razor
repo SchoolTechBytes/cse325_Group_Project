@@ -1,0 +1,41 @@
+@page "/Account/LoginRedirect"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using WheresOurDrummer.Web.Data
+@using WheresOurDrummer.Web.Services
+
+@attribute [Authorize]
+
+@inject UserManager<ApplicationUser> UserManager
+@inject ProfileOnboardingService Onboarding
+@inject IdentityRedirectManager RedirectManager
+
+@* Every successful sign-in comes through here. It runs on a fresh request, so the new auth
+   cookie is already present and works the same for password, passkey and 2FA logins. *@
+
+<PageTitle>Signing in | @AppInfo.Name</PageTitle>
+
+<h1>Signing in</h1>
+<p>Redirecting…</p>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await UserManager.GetUserAsync(HttpContext.User);
+        if (user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
+
+        // RedirectTo rejects absolute and protocol-relative URLs, so ReturnUrl cannot cause an open redirect.
+        RedirectManager.RedirectTo(await Onboarding.GetLandingUrlAsync(user, ReturnUrl));
+    }
+}

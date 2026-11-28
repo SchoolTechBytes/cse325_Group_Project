@@ -27,6 +27,25 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
+            <fieldset class="mb-3">
+                <legend class="form-label fs-6">I am registering as</legend>
+                <InputRadioGroup @bind-Value="Input.Role" Name="Input.Role">
+                    <div class="form-check">
+                        <InputRadio Value="AppRoles.Musician" id="role-musician" class="form-check-input" />
+                        <label for="role-musician" class="form-check-label">A musician</label>
+                    </div>
+                    <div class="form-check">
+                        <InputRadio Value="AppRoles.Band" id="role-band" class="form-check-input" />
+                        <label for="role-band" class="form-check-label">A band</label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => Input.Role" class="text-danger" />
+            </fieldset>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.DisplayName" id="Input.DisplayName" class="form-control" autocomplete="name" aria-required="true" placeholder="Your name" />
+                <label for="Input.DisplayName">Display name</label>
+                <ValidationMessage For="() => Input.DisplayName" class="text-danger" />
+            </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="Input.Email">Email</label>
@@ -72,7 +91,15 @@
 
     public async Task RegisterUser(EditContext editContext)
     {
+        // Never trust the posted value: only the self-service roles may be chosen.
+        if (!AppRoles.SelfAssignable.Contains(Input.Role))
+        {
+            identityErrors = [new IdentityError { Description = "Choose whether you are a musician or a band." }];
+            return;
+        }
+
         var user = CreateUser();
+        user.DisplayName = Input.DisplayName.Trim();
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
@@ -85,7 +112,16 @@
             return;
         }
 
-        Logger.LogInformation("User created a new account with password.");
+        var roleResult = await UserManager.AddToRoleAsync(user, Input.Role);
+        if (!roleResult.Succeeded)
+        {
+            // Do not leave behind an account with no role; it could never reach profile setup.
+            await UserManager.DeleteAsync(user);
+            identityErrors = roleResult.Errors;
+            return;
+        }
+
+        Logger.LogInformation("User created a new {Role} account with password.", Input.Role);
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
@@ -105,7 +141,7 @@
         else
         {
             await SignInManager.SignInAsync(user, isPersistent: false);
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectToPostLogin(ReturnUrl);
         }
     }
 
@@ -133,6 +169,15 @@
 
     private sealed class InputModel
     {
+        [Required(ErrorMessage = "Choose whether you are a musician or a band.")]
+        [Display(Name = "Account type")]
+        public string Role { get; set; } = "";
+
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "Display name")]
+        public string DisplayName { get; set; } = "";
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
