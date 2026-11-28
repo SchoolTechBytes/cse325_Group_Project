@@ -7,6 +7,7 @@ using WheresOurDrummer.Web.Components;
 using WheresOurDrummer.Web.Components.Account;
 using WheresOurDrummer.Web.Data;
 using WheresOurDrummer.Web.Data.Seed;
+using WheresOurDrummer.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +74,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddScoped<AccountRegistrationService>();
 
 var app = builder.Build();
 
