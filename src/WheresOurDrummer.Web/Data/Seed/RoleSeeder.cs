@@ -5,7 +5,7 @@ namespace WheresOurDrummer.Web.Data.Seed;
 /// <summary>Ensures the application roles exist. Safe to run on every startup.</summary>
 public static class RoleSeeder
 {
-    public static readonly string[] RoleNames = ["Musician", "Band"];
+    public static readonly string[] RoleNames = [AppRoles.Musician, AppRoles.Band];
 
     public static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
     {

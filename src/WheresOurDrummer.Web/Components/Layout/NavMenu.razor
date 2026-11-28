@@ -24,7 +24,6 @@
                 <li>
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                         <button type="submit" class="site-nav__link site-nav__button">Logout</button>
                     </form>
                 </li>
@@ -38,13 +37,11 @@
 </nav>
 
 @code {
-    private string? currentUrl;
     private bool collapsible;
     private bool open;
 
     protected override void OnInitialized()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
     }
 
@@ -62,7 +59,6 @@
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
         open = false; // close the mobile menu after navigating
         StateHasChanged();
     }

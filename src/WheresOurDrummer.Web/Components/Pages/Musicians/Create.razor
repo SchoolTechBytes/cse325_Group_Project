@@ -1,0 +1,11 @@
+@page "/musicians/create"
+@using Microsoft.AspNetCore.Authorization
+@using WheresOurDrummer.Web.Data
+@attribute [Authorize(Roles = AppRoles.Musician)]
+
+@* Route is fixed by ProfileRoutes.CreateMusician (new musicians land here after login). *@
+
+<PageTitle>Create your musician profile | @AppInfo.Name</PageTitle>
+
+<h1>Create your musician profile</h1>
+<p>Coming soon: owned by Slice B.</p>
